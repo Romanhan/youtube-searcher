@@ -8,9 +8,14 @@ import java.net.URL;
 
 public class HttpUtils {
 
-	public static String sendGetRequest(String urlString) throws IOException {
+	// This method is added to make the class more testable
+	protected static HttpURLConnection createConnection(String urlString) throws IOException {
 		URL url = new URL(urlString);
-		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		return (HttpURLConnection) url.openConnection();
+	}
+
+	public static String sendGetRequest(String urlString) throws IOException {
+		HttpURLConnection connection = createConnection(urlString);
 		connection.setRequestMethod("GET");
 		StringBuilder response = new StringBuilder();
 
@@ -20,6 +25,8 @@ public class HttpUtils {
 			while ((inputLine = in.readLine()) != null) {
 				response.append(inputLine);
 			}
+		} finally {
+			connection.disconnect();
 		}
 		return response.toString();
 	}
