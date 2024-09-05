@@ -1,8 +1,26 @@
 package eu.romanhan.youtube;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class YoutubeSearcher {
 
-	private static final String API_KEY = "AILI";
-	private static final String API_IRL = "https://www.googleapis.com/youtube/v3/search";
+	private static final Logger logger = LoggerFactory.getLogger(YoutubeSearcher.class);
+	private static final String API_KEY;
+	private static final String BASE_URL = "https://www.googleapis.com/youtube/v3/search";
+	private static final String DATE_FORMAT = "yyyy-MM-dd";
 
+	static {
+		Properties properties = new Properties();
+		try (InputStream input = YoutubeSearcher.class.getClassLoader().getResourceAsStream("config.properties")) {
+			properties.load(input);
+		} catch (IOException e) {
+			logger.error("Failed to load API_KEY");
+		}
+		API_KEY = properties.getProperty("youtube.api.key");
+	}
 }
