@@ -9,18 +9,27 @@ import org.slf4j.LoggerFactory;
 
 public class YoutubeSearcher {
 
-	private static final Logger logger = LoggerFactory.getLogger(YoutubeSearcher.class);
-	private static final String API_KEY;
+	private static Logger logger = LoggerFactory.getLogger(YoutubeSearcher.class);
+	private static String API_KEY;
 	private static final String BASE_URL = "https://www.googleapis.com/youtube/v3/search";
 	private static final String DATE_FORMAT = "yyyy-MM-dd";
 
-	static {
+	public YoutubeSearcher() {
+		loadApiKey();
+	}
+
+	protected void loadApiKey() {
 		Properties properties = new Properties();
 		try (InputStream input = YoutubeSearcher.class.getClassLoader().getResourceAsStream("config.properties")) {
 			properties.load(input);
+			API_KEY = properties.getProperty("youtube.api.key");
 		} catch (IOException e) {
 			logger.error("Failed to load API_KEY");
 		}
-		API_KEY = properties.getProperty("youtube.api.key");
+	}
+
+	// Getter for testing purpose
+	protected String getApiKey() {
+		return API_KEY;
 	}
 }
