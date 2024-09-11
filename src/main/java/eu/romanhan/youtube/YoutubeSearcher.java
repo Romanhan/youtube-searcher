@@ -15,10 +15,6 @@ public class YoutubeSearcher {
 	private static final String DATE_FORMAT = "yyyy-MM-dd";
 
 	public YoutubeSearcher() {
-		loadApiKey();
-	}
-
-	protected void loadApiKey() {
 		Properties properties = new Properties();
 		try (InputStream input = YoutubeSearcher.class.getClassLoader().getResourceAsStream("config.properties")) {
 			properties.load(input);
@@ -32,4 +28,5 @@ public class YoutubeSearcher {
 	protected String getApiKey() {
 		return API_KEY;
 	}
+
 }
